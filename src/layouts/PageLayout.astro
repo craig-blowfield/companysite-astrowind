@@ -1,8 +1,11 @@
 ---
-import PageLayout from '~/layouts/PageLayout.astro';
+import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
+import Footer from '~/components/widgets/Footer.astro';
+import Announcement from '~/components/widgets/Announcement.astro';
 
-import { headerData } from '~/navigation';
+import { headerData, footerData } from '~/navigation';
+
 import type { MetaData } from '~/types';
 
 export interface Props {
@@ -12,24 +15,14 @@ export interface Props {
 const { metadata } = Astro.props;
 ---
 
-<PageLayout metadata={metadata}>
-  <Fragment slot="announcement">
-    <slot name="announcement" />
-  </Fragment>
-  <Fragment slot="header">
-    <slot name="header">
-      <Header
-        links={headerData?.links[2] ? [headerData.links[2]] : undefined}
-        actions={[
-          {
-            text: 'Download',
-            href: 'https://github.com/onwidget/astrowind'
-          },
-        ]}
-        showToggleTheme
-        position="right"
-      />
-    </slot>
-  </Fragment>
-  <slot />
-</PageLayout>
+<Layout metadata={metadata}>
+  <slot name="header">
+    <Header {...headerData} isSticky showRssFeed showToggleTheme />
+  </slot>
+  <main>
+    <slot />
+  </main>
+  <slot name="footer">
+    <Footer {...footerData} />
+  </slot>
+</Layout>
